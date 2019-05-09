@@ -1,0 +1,58 @@
+﻿@using PayrollEstimator.Models
+@using PayrollEstimator.Helpers
+@using Resources
+@model EmployeeEditModel
+
+<div id="addDialog" style="display: none;" ng-controller="employeeAddCtrl">
+    <form id="addEmployeeForm">
+        <div class="addSection">
+            <div>
+                <span class="employeeLabel">@Employee.FirstName:</span>
+            </div>
+            <div>
+                <input type="text" class="@PrettyClasses.TextBox" ng-model="formData.@nameof(EmployeeEditModel.FirstName)" />
+            </div>
+        </div>
+        <div class="addSection">
+            <div>
+                <span class="employeeLabel">@Employee.LastName:</span>
+            </div>
+            <div>
+                <input type="text" class="@PrettyClasses.TextBox" ng-model="formData.@nameof(EmployeeEditModel.LastName)" />
+            </div>
+        </div>
+        <div class="addSectionsHeader">
+            <span class="employeeLabel">@Employee.Dependents</span>
+        </div>
+        <div class="dependentContainer" ng-repeat="dependent in formData.@nameof(EmployeeEditModel.Dependents)">
+            <div class="dependentSection">
+                <span ng-bind="$index + 1"></span>
+            </div>
+            <div class="dependentSection">
+                <div class="addSection">
+                    <div>
+                        <span class="employeeLabel">@Employee.FirstName:</span>
+                    </div>
+                    <div>
+                        <input type="text" class="@PrettyClasses.TextBox" ng-model="dependent.@nameof(EmployeeEditModel.FirstName)"/>
+                    </div>
+                </div>
+                <div class="addSection">
+                    <div>
+                        <span class="employeeLabel">@Employee.LastName:</span>
+                    </div>
+                    <div>
+                        <input type="text" class="@PrettyClasses.TextBox" ng-model="dependent.@nameof(EmployeeEditModel.LastName)"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <input class="@PrettyClasses.Button" type="button" ng-click="addDependent()" value="@Employee.AddDependent"/>
+        </div>
+    </form>
+    <div class="dialogActions">
+        <input class="@PrettyClasses.Button" type="button" ng-click="save()" value="@Employee.Save" />
+        <input class="@PrettyClasses.Button" type="button" ng-click="cancel()" value="@Employee.Cancel" />
+    </div>
+</div>

@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Resources.Employee.PayrollEstimatorTitle</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+<div class="container body-content" style="text-align: center;">
+    <div style="display: inline-block; width: 90%">
+        @RenderBody()
+    </div>
+</div>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/jquery-ui.js")
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

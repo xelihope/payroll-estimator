@@ -1,0 +1,104 @@
+﻿@using PayrollEstimator.Models
+@using PayrollEstimator.Helpers
+@using Resources
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/employeeList.js")
+    @Scripts.Render("~/Scripts/employeeAdd.js")
+}
+
+<div ng-app="app" ng-controller="employeesCtrl">
+    <div class="contentContainer">
+
+        <div class="toolbarContainer">
+            <input id="addButton" type="button" ng-click="openDialog()" value="@Employee.AddEmployee" class="@PrettyClasses.Button" />
+        </div>
+
+        <table class="employeeList" style="display: none;">
+            <thead>
+            <tr>
+                <td class="totalsBottomRow" rowspan="2"></td>
+                <td class="totalsBottomRow" rowspan="2">@Employee.Totals</td>
+                <td ng-bind="formatCurrency(totalCost.biWeeklyCost.pay)"></td>
+                <td ng-bind="formatCurrency(totalCost.biWeeklyCost.benefitsDeduction)"></td>
+                <td class="totalsBottomRow" rowspan="2">--</td>
+                <td ng-bind="formatCurrency(totalCost.biWeeklyCost.dependentsBenefitsDeduction)"></td>
+                <td ng-bind="formatCurrency(totalCost.biWeeklyCost.netCost)"></td>
+            </tr>
+            <tr>
+                <td class="totalsBottomRow" ng-bind="formatCurrency(totalCost.annualCost.pay)"></td>
+                <td class="totalsBottomRow" ng-bind="formatCurrency(totalCost.annualCost.benefitsDeduction)"></td>
+                <td class="totalsBottomRow" ng-bind="formatCurrency(totalCost.annualCost.dependentsBenefitsDeduction)"></td>
+                <td class="totalsBottomRow" ng-bind="formatCurrency(totalCost.annualCost.netCost)"></td>
+            </tr>
+            <tr class="employeeListHeader">
+                <td class="employeeHeaderBottomRow" rowspan="2"></td>
+                <td class="employeeHeaderBottomRow" rowspan="2">@Employee.Name</td>
+                <td>@Employee.BiWeeklyPay</td>
+                <td>@Employee.BiWeeklyBenefitsDeduction</td>
+                <td class="employeeHeaderBottomRow" rowspan="2">@Employee.BenefitsDiscount</td>
+                <td>@Employee.DependentsBiWeeklyBenefitsDeduction</td>
+                <td>@Employee.BiWeeklyNetCost</td>
+            </tr>
+            <tr class="employeeListHeader">
+                <td class="employeeHeaderBottomRow">@Employee.AnnualPay</td>
+                <td class="employeeHeaderBottomRow">@Employee.AnnualBenefitsDeduction</td>
+                <td class="employeeHeaderBottomRow">@Employee.DependentsAnnualBenefitsDeduction</td>
+                <td class="employeeHeaderBottomRow">@Employee.AnnualNetCost</td>
+            </tr>
+            </thead>
+            <tr ng-repeat-start="employee in employees" class="employeeRow">
+                <td class="employeeTopRow" rowspan="2" ng-click="showDependents($event, employee)">></td>
+                <td class="employeeTopRow" rowspan="2" ng-bind="employee.@nameof(EmployeeViewModel.Name)"></td>
+                <td class="employeeTopRow" ng-bind="formatCurrency(employee.@nameof(EmployeeViewModel.BiWeeklyCost).@nameof(EmployeeCostViewModel.Pay))"></td>
+                <td class="employeeTopRow" ng-bind="formatCurrency(employee.@nameof(EmployeeViewModel.BiWeeklyCost).@nameof(EmployeeCostViewModel.BenefitsDeduction))"></td>
+                <td class="employeeTopRow" rowspan="2" ng-bind="formatPercent(employee.@nameof(EmployeeViewModel.BiWeeklyCost).@nameof(EmployeeCostViewModel.BenefitsDiscount))"></td>
+                <td class="employeeTopRow" ng-bind="formatCurrency(employee.@nameof(EmployeeViewModel.BiWeeklyCost).@nameof(EmployeeCostViewModel.DependentsBenefitsDeduction))"></td>
+                <td class="employeeTopRow" ng-bind="formatCurrency(employee.@nameof(EmployeeViewModel.BiWeeklyCost).@nameof(EmployeeCostViewModel.NetCost))"></td>
+            </tr>
+            <tr>
+                <td ng-bind="formatCurrency(employee.@nameof(EmployeeViewModel.AnnualCost).@nameof(EmployeeCostViewModel.Pay))"></td>
+                <td ng-bind="formatCurrency(employee.@nameof(EmployeeViewModel.AnnualCost).@nameof(EmployeeCostViewModel.BenefitsDeduction))"></td>
+                <td ng-bind="formatCurrency(employee.@nameof(EmployeeViewModel.AnnualCost).@nameof(EmployeeCostViewModel.DependentsBenefitsDeduction))"></td>
+                <td ng-bind="formatCurrency(employee.@nameof(EmployeeViewModel.AnnualCost).@nameof(EmployeeCostViewModel.NetCost))"></td>
+            </tr>
+            <tr ng-show="employee.showDependents" ng-repeat-end class="dependentsRow">
+                <td></td>
+                <td colspan="6">
+                    <table class="dependentsList">
+                        <thead>
+                        <tr class="depedentsTitle">
+                            <td colspan="3">Dependents</td>
+                        </tr>
+                        <tr>
+                            <td class="dependentHeaderBottomRow" rowspan="2">@Employee.Name</td>
+                            <td>@Employee.BiWeeklyBenefitsDeduction</td>
+                            <td class="dependentHeaderBottomRow" rowspan="2">@Employee.BenefitsDiscount</td>
+                        </tr>
+                        <tr>
+                            <td class="dependentHeaderBottomRow">@Employee.AnnualBenefitsDeduction</td>
+                        </tr>
+                        </thead>
+                        <tr ng-repeat-start="dependent in employee.@nameof(EmployeeViewModel.Dependents)">
+                            <td class="dependentTopRow" rowspan="2" ng-bind="dependent.@nameof(DependentViewModel.Name)"></td>
+                            <td class="dependentTopRow" ng-bind="formatCurrency(dependent.@nameof(DependentViewModel.BiWeeklyCost).@nameof(DependentCostViewModel.BenefitsDeduction))"></td>
+                            <td class="dependentTopRow" rowspan="2" ng-bind="formatPercent(dependent.@nameof(DependentViewModel.BiWeeklyCost).@nameof(DependentCostViewModel.BenefitsDiscount))"></td>
+                        </tr>
+                        <tr ng-repeat-end>
+                            <td ng-bind="formatCurrency(dependent.@nameof(DependentViewModel.AnnualCost).@nameof(DependentCostViewModel.BenefitsDeduction))"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="loadingIcon">
+            <img src="Content/Images/loading.gif" />
+        </div>
+    </div>
+    @Html.Partial("_Add", new EmployeeEditModel())
+</div>
