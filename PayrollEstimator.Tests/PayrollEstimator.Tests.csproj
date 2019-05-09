@@ -134,6 +134,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="Services\EmployeeCostCalculatorTests.cs" />
+    <Compile Include="Services\EmployeeValidatorTests.cs" />
     <Compile Include="TestDbAsyncEnumerator.cs" />
     <Compile Include="TestDbAsyncEnumerable.cs" />
     <Compile Include="EntityFrameworkHelper.cs" />

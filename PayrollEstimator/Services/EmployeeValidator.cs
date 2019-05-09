@@ -14,13 +14,14 @@ namespace PayrollEstimator.Services
         {
             var errors = new List<string>();
 
-            if (employee.FirstName == null || employee.FirstName == ""
-                || employee.LastName == null || employee.LastName == "") {
+            if (employee.FirstName == null || employee.FirstName.Trim() == ""
+                || employee.LastName == null || employee.LastName.Trim() == "") {
                 errors.Add(Resources.Employee.NameRequiredError);
             }
 
-            if (employee.Dependents.Any(d => d.FirstName == null || d.FirstName == "" 
-                || d.LastName == null || d.LastName == "")) {
+            if (employee.Dependents != null && 
+                employee.Dependents.Any(d => d.FirstName == null || d.FirstName.Trim() == "" 
+                    || d.LastName == null || d.LastName.Trim() == "")) {
                 errors.Add(Resources.Employee.DependentNameRequiredError);
             }
 
